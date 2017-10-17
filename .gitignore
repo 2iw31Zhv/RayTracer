@@ -1,0 +1,6 @@
+BigProject.VC.db
+/BigProject/logs/*
+/BigProject/Release/*
+/BigProject/Resources/*
+/BigProject/x64/*
+/BigProject/derivation/*
