@@ -1,2 +1,2 @@
 ﻿  RayTracingScene.cpp
-  BigProject.vcxproj -> D:\Code\rendering\BigProject\x64\Release\BigProject.exe
+RayTracingScene.cpp(203): error C3861: “Poin3F”: 找不到标识符

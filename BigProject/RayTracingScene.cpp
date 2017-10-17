@@ -200,7 +200,7 @@ void RayTracingScene::precompute()
 		for (int i = 0; i < width(); ++i)
 		{
 			ray_tracer(cast_ray(i, j), 
-				Point3F(1.0f, 1.0f, 1.0f), 
+				Poin3F(1.0f, 1.0f, 1.0f), 
 				10, 
 				screenbuffer_[j * width() + i],
 				light_ray);
@@ -241,8 +241,6 @@ void RayTracingScene::set_scene()
 	pv2.push_back(Vertice(0.0f - width() * 0.5f, 0.0f + height() * 0.5f, 0.0f + height() * 1.0f));
 	Polygonal * ply2 = new Polygonal(pv2);
 	ply2->get_material().dielectric = 20.0f;
-	//ply2->get_material().phong_color = Qt::white;
-	//ply2->get_material().phong_ratio = 64.0f;
 	surface_vec_.push_back(ply2);
 
 	std::vector<Vertice> pv3;
