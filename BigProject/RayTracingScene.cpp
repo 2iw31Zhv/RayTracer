@@ -189,8 +189,8 @@ void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QCo
 
 void RayTracingScene::precompute()
 {
-	Ray light_ray(Point3F(0.0f, height() * 0.5f, height() * 0.1f),
-		Point3F(0.0f, 0.0f, height() * 0.5f));
+	Ray light_ray(Point3F(0.0f, height() * 0.5f, height() * 0.2f),
+		Point3F(0.0f, 0.0f, height() * 0.4f));
 
 	set_scene();
 
@@ -200,8 +200,8 @@ void RayTracingScene::precompute()
 		for (int i = 0; i < width(); ++i)
 		{
 			ray_tracer(cast_ray(i, j), 
-				Poin3F(1.0f, 1.0f, 1.0f), 
-				10, 
+				Point3F(1.0f, 1.0f, 1.0f), 
+				20, 
 				screenbuffer_[j * width() + i],
 				light_ray);
 		}
@@ -230,8 +230,8 @@ void RayTracingScene::set_scene()
 	pv1.push_back(Vertice(0.0f + width() * 0.5f, 0.0f - height() * 0.5f, 0.0f + height() * 1.0f));
 	pv1.push_back(Vertice(0.0f - width() * 0.5f, 0.0f - height() * 0.5f, 0.0f + height() * 1.0f));
 	Polygonal * ply1 = new Polygonal(pv1);
-	ply1->get_material().lambert_color = Qt::white;
-	ply1->get_material().set_texture_from_file("texture/texture2.png");
+	ply1->get_material().lambert_color = Qt::red;
+	//ply1->get_material().set_texture_from_file("texture/texture2.png");
 	surface_vec_.push_back(ply1);
 
 	std::vector<Vertice> pv2;
@@ -250,7 +250,7 @@ void RayTracingScene::set_scene()
 	pv3.push_back(Vertice(0.0f + width() * 0.5f, 0.0f + height() * 0.5f, 0.0f + height() * 1.0f));
 	Polygonal * ply3 = new Polygonal(pv3);
 	//ply3->get_material().lambert_color = Qt::blue;
-	ply3->get_material().dielectric = 20.0f;
+	//ply3->get_material().dielectric = 20.0f;
 	surface_vec_.push_back(ply3);
 
 	std::vector<Vertice> pv4;
@@ -260,7 +260,7 @@ void RayTracingScene::set_scene()
 	pv4.push_back(Vertice(0.0f - width() * 0.5f, 0.0f + height() * 0.5f, 0.0f + height() * 1.0f));
 	Polygonal * ply4 = new Polygonal(pv4);
 	//ply4->get_material().lambert_color = Qt::yellow;
-	ply4->get_material().dielectric = 20.0f;
+	//ply4->get_material().dielectric = 20.0f;
 	surface_vec_.push_back(ply4);
 
 	std::vector<Vertice> pv5;
@@ -269,35 +269,45 @@ void RayTracingScene::set_scene()
 	pv5.push_back(Vertice(0.0f + width() * 0.5f, 0.0f + height() * 0.5f, 0.0f + height() * 1.0f));
 	pv5.push_back(Vertice(0.0f - width() * 0.5f, 0.0f + height() * 0.5f, 0.0f + height() * 1.0f));
 	Polygonal * ply5 = new Polygonal(pv5);
-	ply5->get_material().dielectric = 20.0f;
+	ply5->get_material().lambert_color = Qt::darkYellow;
+	//ply5->get_material().dielectric = 20.0f;
 	surface_vec_.push_back(ply5);
 
+	std::vector<Vertice> pv6;
+	pv6.push_back(Vertice(0.0f - width() * 0.5f, 0.0f - height() * 0.5f, -height() * 1.0f));
+	pv6.push_back(Vertice(0.0f + width() * 0.5f, 0.0f - height() * 0.5f, -height() * 1.0f));
+	pv6.push_back(Vertice(0.0f + width() * 0.5f, 0.0f + height() * 0.5f, -height() * 1.0f));
+	pv6.push_back(Vertice(0.0f - width() * 0.5f, 0.0f + height() * 0.5f, -height() * 1.0f));
+	Polygonal * ply6 = new Polygonal(pv6);
+	ply6->get_material().set_texture_from_file("texture/texture2.png");
+	surface_vec_.push_back(ply6);
 
-	Sphere * sph2 = new Sphere(Vertice(-200, -70, height() * 0.3f), 30);
+
+	Sphere * sph2 = new Sphere(Vertice(-100, -35, height() * 0.15f), 30);
 	sph2->get_material().lambert_color = Qt::red;
 	sph2->get_material().phong_color = Qt::yellow;
 	sph2->get_material().phong_ratio = 16;
 
-	surface_vec_.push_back(sph2);
+	//surface_vec_.push_back(sph2);
 
-	Sphere * sph3 = new Sphere(Vertice(200, -70, height() * 0.001f), 60);
-	sph3->get_material().lambert_color = Qt::blue;
-	sph3->get_material().set_texture_from_file("texture/normaltexture3.jpg");
-	sph3->get_material().set_normal_texture();
-	sph3->get_material().phong_color = Qt::green;
-	sph3->get_material().phong_ratio = 4.0;
-	surface_vec_.push_back(sph3);
+	//Sphere * sph3 = new Sphere(Vertice(200, -70, height() * 0.001f), 60);
+	//sph3->get_material().lambert_color = Qt::blue;
+	//sph3->get_material().set_texture_from_file("texture/normaltexture3.jpg");
+	//sph3->get_material().set_normal_texture();
+	//sph3->get_material().phong_color = Qt::green;
+	//sph3->get_material().phong_ratio = 4.0;
+	//surface_vec_.push_back(sph3);
 
-	Cuboid * cub2 = new Cuboid(Vertice(0.0f, -height() * 0.5f, height() * 0.5f), 100, 100, height() * 0.7f);
-	cub2->get_material().lambert_color = Qt::green;
-	cub2->givens3(0.0, 0.0, PI / 6);
-	//surface_vec_.push_back(cub2);
+	//Cuboid * cub2 = new Cuboid(Vertice(0.0f, -height() * 0.5f, height() * 0.5f), 100, 100, height() * 0.7f);
+	//cub2->get_material().lambert_color = Qt::green;
+	//cub2->givens3(0.0, 0.0, PI / 6);
+	////surface_vec_.push_back(cub2);
 
-	std::vector<Vertice> plvec;
-	plvec.push_back(Vertice(-200, -270.0, height() * 0.40f));
-	plvec.push_back(Vertice(-200 - height() * 0.10f, -270.0, height() * 0.30f));
-	plvec.push_back(Vertice(-200, -270.0, height() * 0.20f));
-	plvec.push_back(Vertice(-200 + height() * 0.10f, -270.0, height() * 0.30f));
+	//std::vector<Vertice> plvec;
+	//plvec.push_back(Vertice(-200, -270.0, height() * 0.40f));
+	//plvec.push_back(Vertice(-200 - height() * 0.10f, -270.0, height() * 0.30f));
+	//plvec.push_back(Vertice(-200, -270.0, height() * 0.20f));
+	//plvec.push_back(Vertice(-200 + height() * 0.10f, -270.0, height() * 0.30f));
 	//
 	//Polygonal * poy = new Polygonal(plvec);
 	//poy->get_material().lambert_color = Qt::red;
@@ -310,25 +320,17 @@ void RayTracingScene::set_scene()
 
 	RotationBessel2 * rbs = new RotationBessel2(
 		QPointF(0.0, -height() * 0.4),
-		QPointF(200.0, height() * 0.0),
+		QPointF(200.0, -height() * 0.3),
 		QPointF(0.0, height() * 0.4),
 		Vertice(-200, -70, height() * 0.3f),
 		0.7);
-	// rbs->get_material().lambert_color = Qt::blue;
-	rbs->get_material().dielectric = 1.05;
-	rbs->get_material().alpha = Point3F(1e-5, 2e-5, 0.002);
+	rbs->get_material().lambert_color = Qt::blue;
+	//rbs->get_material().dielectric = 1.05;
+	rbs->get_material().alpha = Point3F(0.001, 0.001, 1e-5);
 	rbs->get_material().phong_color = QColor(100, 100, 100);
-	rbs->get_material().phong_ratio = 64;
+	rbs->get_material().phong_ratio = 32;
 	surface_vec_.push_back(rbs);
 
-	//BesselCurve bc(50);
-	//bc.push_ctrl_points(QPointF(0.0, -height() * 0.4));
-	//bc.push_ctrl_points(QPointF(200.0, height() * 0.0));
-	//bc.push_ctrl_points(QPointF(0.0, height() * 0.4));
-	//
-	//Mesh mesh;
-	//convert(mesh, bc, 72);
-	//mesh.save("DrawMesh.obj");
 }
 
 void RayTracingScene::paintEvent(QPaintEvent * e)

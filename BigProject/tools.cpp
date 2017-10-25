@@ -159,28 +159,50 @@ double pow2(double x)
 
 double pow4(double x)
 {
-	return x * x * x * x;
+	return pow2(x) * pow2(x);
 }
 
-int solve_quartic(double * x, double a, double b, double c, double d, double e)
+// a x^2 + b x + c = 0
+int solve_quadratic(double * x, double a, double b, double c)
 {
 	double tolerance = DBL_MIN;
-	if (fabs(a) < tolerance && fabs(b) < tolerance && fabs(c) < tolerance && fabs(d) < tolerance)
+	if (fabs(a) < tolerance && fabs(b) < tolerance)
 	{
 		return 0;
 	}
-	else if (fabs(a) < tolerance && fabs(b) < tolerance && fabs(c) < tolerance)
-	{
-		x[0] = - e / d;
-		return 1;
-	}
-	else if (fabs(a) < tolerance && fabs(b) < tolerance)
-	{
-		return SolveP2(x, d / c, e / c);
-	}
 	else if (fabs(a) < tolerance)
 	{
-		return SolveP3(x, c / b, d / b, e / b);
+		x[0] = -c / b;
+		return 1;
+	}
+	else
+	{
+		return SolveP2(x, b / a, c / a);
+	}
+	return 0;
+}
+
+// a x^3 + b x^2 + c x + d = 0
+int solve_cubic(double * x, double a, double b, double c, double d)
+{
+	double tolerance = DBL_MIN;
+	if (fabs(a) < tolerance)
+	{
+		return solve_quadratic(x, b, c, d);
+	}
+	else
+	{
+		return SolveP3(x, b / a, c / a, d / a);
+	}
+}
+
+// a x^4 + b x^3 + c x^2 + d x + e = 0
+int solve_quartic(double * x, double a, double b, double c, double d, double e)
+{
+	double tolerance = DBL_MIN;
+	if (fabs(a) < tolerance)
+	{
+		return solve_cubic(x, b, c, d, e);
 	}
 	else
 	{

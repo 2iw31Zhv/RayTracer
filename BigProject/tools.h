@@ -48,4 +48,5 @@ void copy_arr(int n, const double * a, double * b);
 double pow2(double x);
 double pow4(double x);
 
+int solve_quadratic(double * x, double a, double b, double c);
 int solve_quartic(double * x, double a, double b, double c, double d, double e);
