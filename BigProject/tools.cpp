@@ -2,13 +2,13 @@
 #include <complex>
 #include "tools.h"
 
-#include "Bessel.h"
+#include "Bezier.h"
 #include "Mesh.h"
 #include "Geometry.h"
 #include "poly34.h"
 
 
-void convert(Mesh& mesh, const BesselCurve& curv, const int angle_num)
+void convert(Mesh& mesh, const BezierCurve& curv, const int angle_num)
 {
 	mesh.reset();
 

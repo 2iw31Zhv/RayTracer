@@ -6,7 +6,7 @@
 
 #include "PaintView.h"
 
-#include "Bessel.h"
+#include "Bezier.h"
 #include "Geometry.h"
 #include "Mesh.h"
 #include "tools.h"
@@ -14,10 +14,10 @@
 
 
 PaintView::PaintView() :
-	bessel_curve_(new BesselCurve),
+	bezier_curve_(new BezierCurve),
 	pmesh_(new Mesh),
 	is_mouse_enable_(true),
-	rendering_stat_(RenderingBesselCurve)
+	rendering_stat_(RenderingBezierCurve)
 {
 	setAttribute(Qt::WA_DeleteOnClose, false);
 }
@@ -33,11 +33,11 @@ void PaintView::paintEvent(QPaintEvent * e)
 
 	switch (rendering_stat_)
 	{
-	case RenderingBesselCurve:
-		draw_bessel_curve(painter);
+	case RenderingBezierCurve:
+		draw_bezier_curve(painter);
 		break;
-	case RenderingBesselModel:
-		draw_bessel_model(painter);
+	case RenderingBezierModel:
+		draw_bezier_model(painter);
 		break;
 	default:
 		break;
@@ -53,11 +53,11 @@ void PaintView::mousePressEvent(QMouseEvent * e)
 	if (e->button() == Qt::LeftButton)
 	{
 		if (!is_mouse_enable_) return;
-		if (bessel_curve_->ctrl_points_size() == 0)
+		if (bezier_curve_->ctrl_points_size() == 0)
 		{
 			if (std::fabs(x - width() * 0.5) <= 3.0)
 			{
-				bessel_curve_->push_ctrl_points(QPointF(0, y));
+				bezier_curve_->push_ctrl_points(QPointF(0, y));
 			}
 		}
 		else
@@ -65,43 +65,43 @@ void PaintView::mousePressEvent(QMouseEvent * e)
 			if (std::fabs(x - width() * 0.5) <= 3.0)
 			{
 				is_mouse_enable_ = false;
-				bessel_curve_->push_ctrl_points(QPointF(0.0, y));
+				bezier_curve_->push_ctrl_points(QPointF(0.0, y));
 			}
 			else
 			{
 				if (x < width() * 0.5) return;
-				bessel_curve_->push_ctrl_points(QPointF(x - width() * 0.5, y));
+				bezier_curve_->push_ctrl_points(QPointF(x - width() * 0.5, y));
 			}
 		}
 	}
 	else if (e->button() == Qt::RightButton)
 	{
 		is_mouse_enable_ = true;
-		if (bessel_curve_->ctrl_points_size() > 0)
+		if (bezier_curve_->ctrl_points_size() > 0)
 		{
-			bessel_curve_->pop_ctrl_points();
+			bezier_curve_->pop_ctrl_points();
 		}
 	}
 
 	update();
 }
 
-void PaintView::draw_bessel_curve(QPainter& painter)
+void PaintView::draw_bezier_curve(QPainter& painter)
 {
 	painter.setPen(QPen(Qt::blue, 1, Qt::SolidLine, Qt::RoundCap));
 	painter.drawLine(QPointF(width() * 0.5, height() * 0.1), QPoint(width() * 0.5, height() * 0.9));
 
 	painter.setPen(QPen(Qt::darkGreen, 1, Qt::SolidLine, Qt::RoundCap));
-	for (int i = 0; i < bessel_curve_->samples_size(); ++i)
+	for (int i = 0; i < bezier_curve_->samples_size(); ++i)
 	{
-		qreal x = bessel_curve_->at(i).x();
-		qreal y = bessel_curve_->at(i).y();
+		qreal x = bezier_curve_->at(i).x();
+		qreal y = bezier_curve_->at(i).y();
 
 		painter.drawPoint(QPointF(x + width() * 0.5, y));
 	}
 }
 
-void PaintView::draw_bessel_model(QPainter& painter)
+void PaintView::draw_bezier_model(QPainter& painter)
 {
 	painter.setPen(QPen(Qt::darkGreen, 1, Qt::SolidLine, Qt::RoundCap));
 	for (int i = 1; i <= pmesh_->trifacets_num(); ++i)
@@ -135,8 +135,8 @@ void PaintView::draw_bessel_model(QPainter& painter)
 
 void PaintView::on_start_rotate()
 {
-	convert(*pmesh_, *bessel_curve_, 72);
-	rendering_stat_ = RenderingBesselModel;
+	convert(*pmesh_, *bezier_curve_, 72);
+	rendering_stat_ = RenderingBezierModel;
 	update();
 }
 

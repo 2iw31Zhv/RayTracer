@@ -6,13 +6,13 @@
 #include "Cuboid.h"
 #include "Material.h"
 #include "Polygonal.h"
-#include "RotationBessel2.h"
+#include "RotationBezier2.h"
 #include "Surface.h"
 #include "Sphere.h"
 #include "Triangle.h"
 #include "tools.h"
 
-#include "Bessel.h"
+#include "Bezier.h"
 #include "Mesh.h"
 
 #include "easylogging++\easylogging++.h"
@@ -313,12 +313,12 @@ void RayTracingScene::set_scene()
 	//poy->get_material().lambert_color = Qt::red;
 	//surface_vec_.push_back(poy);
 
-	//BesselCurve bc;
+	//BezierCurve bc;
 	//bc.push_ctrl_points(QPointF(0.0, height() * 0.4));
 	//bc.push_ctrl_points(QPointF(100.0, 0.0));
 	//bc.push_ctrl_points(QPointF(0.0, -height() * -0.4));
 
-	RotationBessel2 * rbs = new RotationBessel2(
+	RotationBezier2 * rbs = new RotationBezier2(
 		QPointF(0.0, -height() * 0.4),
 		QPointF(200.0, -height() * 0.3),
 		QPointF(0.0, height() * 0.4),

@@ -50,9 +50,6 @@
     <ClCompile Include="GeneratedFiles\qrc_mainwindow.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bessel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PaintView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,16 +99,19 @@
     <ClCompile Include="Polygonal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RotationBesselSurface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MeshSurface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RotationBessel2.cpp">
+    <ClCompile Include="poly34.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="poly34.cpp">
+    <ClCompile Include="Bezier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RotationBezier2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RotationBezierSurface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -135,9 +135,6 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bessel.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="easylogging++\easylogging++.h">
       <Filter>Header Files</Filter>
@@ -172,16 +169,19 @@
     <ClInclude Include="Polygonal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RotationBesselSurface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MeshSurface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RotationBessel2.h">
+    <ClInclude Include="poly34.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="poly34.h">
+    <ClInclude Include="Bezier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RotationBezier2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RotationBezierSurface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

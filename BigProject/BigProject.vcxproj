@@ -142,7 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bessel.cpp" />
+    <ClCompile Include="Bezier.cpp" />
     <ClCompile Include="Cuboid.cpp" />
     <ClCompile Include="easylogging++\easylogging++.cc" />
     <ClCompile Include="GeneratedFiles\Debug\moc_mainwindow.cpp">
@@ -190,8 +190,8 @@
     <ClCompile Include="poly34.cpp" />
     <ClCompile Include="Polygonal.cpp" />
     <ClCompile Include="RayTracingScene.cpp" />
-    <ClCompile Include="RotationBessel2.cpp" />
-    <ClCompile Include="RotationBesselSurface.cpp" />
+    <ClCompile Include="RotationBezier2.cpp" />
+    <ClCompile Include="RotationBezierSurface.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="tools.cpp" />
@@ -238,7 +238,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bessel.h" />
+    <ClInclude Include="Bezier.h" />
     <ClInclude Include="Cuboid.h" />
     <ClInclude Include="easylogging++\easylogging++.h" />
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
@@ -249,8 +249,8 @@
     <ClInclude Include="Point3.h" />
     <ClInclude Include="poly34.h" />
     <ClInclude Include="Polygonal.h" />
-    <ClInclude Include="RotationBessel2.h" />
-    <ClInclude Include="RotationBesselSurface.h" />
+    <ClInclude Include="RotationBezier2.h" />
+    <ClInclude Include="RotationBezierSurface.h" />
     <ClInclude Include="Triangle.h" />
     <CustomBuild Include="RayTracingScene.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

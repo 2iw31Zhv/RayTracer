@@ -12,9 +12,9 @@
 #define PI 3.14159265
 class Vertice;
 class Mesh;
-class BesselCurve;
+class BezierCurve;
 
-void convert(Mesh& mesh, const BesselCurve& curv, int angle_num);
+void convert(Mesh& mesh, const BezierCurve& curv, int angle_num);
 
 QPointF orthogonal_project(const Vertice& v);
 
