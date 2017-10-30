@@ -159,7 +159,7 @@ QColor Polygonal::read_texture(const Ray & ray, float t) const
 	int hit_j = int(width * u);
 
 	FIRGB16 color = image[hit_i][hit_j];
-	LOG(DEBUG) << color.red << " " << color.green << " " << color.blue;
+	//LOG(DEBUG) << color.red << " " << color.green << " " << color.blue;
 	return QColor(color.red, color.green, color.blue);
 }
 

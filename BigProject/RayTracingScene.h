@@ -33,6 +33,6 @@ private:
 	Ray cast_ray(int i, int j);
 	bool check_hit(const Ray& ray, float& t, Surface *& hit_object);
 
-	void ray_tracer(const Ray& ray, Point3F weight, int depth, QColor& color, const Ray& light_ray);
+	void ray_tracer(const Ray& ray, Point3F weight, int depth, QColor& color, const Point3F& light_source);
 	
 };

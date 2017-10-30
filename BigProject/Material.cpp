@@ -35,7 +35,7 @@ void Material::set_texture_from_file(std::string filename)
 
 	size_t width = FreeImage_GetWidth(bitmap);
 	size_t height = FreeImage_GetHeight(bitmap);
-	LOG(DEBUG) << width << " " << height;
+	
 
 	size_t pixelbyte = FreeImage_GetLine(bitmap) / width;
 

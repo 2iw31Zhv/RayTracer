@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	ui.setupUi(this);
 
+
 	connect(ui.actionBy_Rotation, SIGNAL(triggered()), this, SLOT(on_rotation_model()));
 	connect(ui.actionNew_Scene, SIGNAL(triggered()), this, SLOT(on_new_scene()));
 	connect(ui.actionRay_tracing, SIGNAL(triggered()), this, SLOT(on_ray_tracing()));

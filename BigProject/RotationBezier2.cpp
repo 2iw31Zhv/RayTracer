@@ -5,6 +5,8 @@
 
 #include "easylogging++\easylogging++.h"
 
+#include <cstdio>
+
 RotationBezier2::RotationBezier2(const QPointF & c1, 
 	const QPointF & c2, 
 	const QPointF & c3,
@@ -29,21 +31,12 @@ RotationBezier2::RotationBezier2(const QPointF & c1,
 // r = c1 (1 - 2 u + u^2) + c2 ( 2u - 2u^2) + c3 u^2
 // rx = Ax u^2 + Bx u + Cx
 // ry = Ay u^2 + By u + Cy
-void bezier_parameters_(const QPointF& c1, const QPointF& c2, const QPointF& c3,
-	double & Ax, double & Bx, double & Cx,
-	double & Ay, double & By, double & Cy)
+void bezier_parameters_(double c1, double c2, double c3,
+	double& A, double& B, double& C)
 {
-	QPointF A = c1 -2 * c2 + c3;
-	QPointF B = 2 * c2 - 2 * c1;
-	QPointF C = c1;
-
-	Ax = static_cast<double>(A.x());
-	Bx = static_cast<double>(B.x());
-	Cx = static_cast<double>(C.x());
-
-	Ay = static_cast<double>(A.y());
-	By = static_cast<double>(B.y());
-	Cy = static_cast<double>(C.y());
+	A = c1 -2 * c2 + c3;
+	B = 2 * c2 - 2 * c1;
+	C = c1;
 }
 
 // local_eye.y + t d.y = Ay u^2 + By u + Cy
@@ -128,7 +121,9 @@ bool RotationBezier2::hit(const Ray & ray, float t0, float t1, float & t)
 	Point3F local_eye = ray.e() - center_;
 	double Ax, Bx, Cx;
 	double Ay, By, Cy;
-	bezier_parameters_(c1_, c2_, c3_, Ax, Bx, Cx, Ay, By, Cy);
+	bezier_parameters_(c1_.x(), c2_.x(), c3_.x(), Ax, Bx, Cx);
+	bezier_parameters_(c1_.y(), c2_.y(), c3_.y(), Ay, By, Cy);
+
 	int n;
 	double u[4];
 	solve_hit_u(local_eye, ray.d(), Ax, Bx, Cx,
@@ -143,15 +138,22 @@ bool RotationBezier2::hit(const Ray & ray, float t0, float t1, float & t)
 			uvec.push_back(u[i]);
 		}
 	}
+	
+	auto new_end = std::unique(uvec.begin(), uvec.end(), [](double a, double b) {
+		return fabs(a - b) < 1e-7; });
+	uvec.erase(new_end, uvec.end());
+
+	
 	if (uvec.size() > 2)
 	{
+
 		std::cerr << "BAD THING! " << __LINE__ << std::endl;
 		while (1);
 	}
 	// solve t from u
 	
 	std::vector<double> tvec;
-	if (fabs(ray.d().y()) < 1e-3)
+	if (fabs(ray.d().y()) < 1e-5)
 	{
 		if (uvec.size() > 1)
 		{
@@ -208,40 +210,46 @@ bool RotationBezier2::hit(const Ray & ray, float t0, float t1, float & t)
 
 }
 
+// local_eye.y + t d.y = Ay u^2 + By u + Cy
+// (local_eye.x + t d.x)^2 + (local_eye.z + t d.z)^2 = (Ax u^2 + Bx u + Cx)^2
 Point3F RotationBezier2::hit_normal(const Ray & ray, float t) const
 {
-	Point3F hit_point = (ray.at(t) - center_);
+	Point3F local_hit = ray.at(t) - center_;
+	double ay, by, cy;
+	bezier_parameters_(c1_.y(), c2_.y(), c3_.y(), ay, by, cy);
 
-	double a = c1_.y() - 2 * c2_.y() + c3_.y();
-	double b = 2 * (c2_.y() - c1_.y());
-	double c = c1_.y() - hit_point.y();
+	double u_buff[2];
+	int m = solve_quadratic(u_buff, ay, by, cy - local_hit.y());
 
-	double u;
-	if (fabs(a) < 1e-4)
+	double u = 0.0;
+	bool exist = false;
+
+	if (m == 1)
 	{
-		u = - c / b;
-	}
-	else
-	{
-		double delta = b * b - 4 * a * c;
-		assert(delta >= 0.0);
-		double u1 = (-b - sqrt(delta)) / 2 * a;
-		double u2 = (-b + sqrt(delta)) / 2 * a;
-
-		if (0 <= u1 && u1 <= 1)
+		if (.0 <= u_buff[0] && u_buff[0] <= 1.0)
 		{
-			u = u1;
-		}
-		else
-		{
-			assert(0 <= u2 && u2 <= 1);
-			u = u2;
+			u = u_buff[0];
+			exist = true;
 		}
 	}
+	else if (m == 2)
+	{
+		for (int i = 0; i < 2; ++i)
+		{
+			if (.0 <= u_buff[i] && u_buff[i] <= 1.0)
+			{
+				u = u_buff[0];
+				exist = true;
+			}
+		}
+	}
 
-	double dxu = (c1_.x() - 2 * c2_.x() + c3_.x()) * u + (c2_.x() - c1_.x());
-	double dyu = (c1_.y() - 2 * c2_.y() + c3_.y()) * u + (c2_.y() - c1_.y());
-	
+	double ax, bx, cx;
+	bezier_parameters_(c1_.x(), c2_.x(), c3_.x(), ax, bx, cx);
+
+	double dxu = 2.0 * ax * u + bx;
+	double dyu = 2.0 * ay * u + by;
+
 	if (dyu > 0.0)
 	{
 		dyu = -dyu;
@@ -250,11 +258,12 @@ Point3F RotationBezier2::hit_normal(const Ray & ray, float t) const
 
 	QPointF n(-dyu, dxu);
 
-	QPointF st(hit_point.x(), hit_point.z());
+	QPointF st(local_hit.x(), local_hit.z());
 	double nrmst = sqrt(st.x() * st.x() + st.y() * st.y());
 	st /= nrmst;
-	st *= dyu;
+	st *= -dyu;
 
-	return Point3F(st.x(), -dxu, st.y()).normalize();
+	return Point3F(st.x(), dxu, st.y()).normalize();
+
 }
 

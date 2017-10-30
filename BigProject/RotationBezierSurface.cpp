@@ -52,7 +52,7 @@ bool RotationBezierSurface::hit(const Ray & ray, float t0, float t1, float & t)
 		double yu = pu_(u).y();
 		double dxu = dpu_(u).x();
 		double dyu = dpu_(u).y();
-		LOG(DEBUG) << "du " << dxu << " " << dyu;
+		//LOG(DEBUG) << "du " << dxu << " " << dyu;
 		f[0] = size_ * xu * cos(v)
 			- ray.at(tempt).x() + center_.x();
 		f[1] = size_ * yu
@@ -61,7 +61,10 @@ bool RotationBezierSurface::hit(const Ray & ray, float t0, float t1, float & t)
 			- ray.at(tempt).z() + center_.z();
 
 		double residual = nrmi(3, f);
-		LOG(DEBUG) << f[0] << " " << f[1] << " " << f[2];
+		//
+		
+		
+		// LOG(DEBUG) << f[0] << " " << f[1] << " " << f[2];
 
 		if (residual < 1e-4)
 		{
@@ -81,9 +84,9 @@ bool RotationBezierSurface::hit(const Ray & ray, float t0, float t1, float & t)
 		jacobian[2][1] = size_ * xu * cos(v);
 		jacobian[2][2] = -ray.d().z();
 
-		LOG(DEBUG) << jacobian[0][0] << " " << jacobian[0][1] << " " << jacobian[0][2];
-		LOG(DEBUG) << jacobian[1][0] << " " << jacobian[1][1] << " " << jacobian[1][2];
-		LOG(DEBUG) << jacobian[2][0] << " " << jacobian[2][1] << " " << jacobian[2][2];
+		//LOG(DEBUG) << jacobian[0][0] << " " << jacobian[0][1] << " " << jacobian[0][2];
+		//LOG(DEBUG) << jacobian[1][0] << " " << jacobian[1][1] << " " << jacobian[1][2];
+		//LOG(DEBUG) << jacobian[2][0] << " " << jacobian[2][1] << " " << jacobian[2][2];
 
 		double detj = determinant3(jacobian[0][0], jacobian[0][1], jacobian[0][2],
 			jacobian[1][0], jacobian[1][1], jacobian[1][2],
@@ -93,7 +96,7 @@ bool RotationBezierSurface::hit(const Ray & ray, float t0, float t1, float & t)
 		{
 			return false;
 		}
-		LOG(DEBUG) << detj;
+		//LOG(DEBUG) << detj;
 		//compute inverse jacobian
 		auto PROCESS = [&](int row, int col,
 			int row1, int row2,
@@ -114,13 +117,13 @@ bool RotationBezierSurface::hit(const Ray & ray, float t0, float t1, float & t)
 		PROCESS(2, 1, 0, 1, 0, 2, -1.0);
 		PROCESS(2, 2, 0, 1, 0, 1, 1.0);
 		
-		LOG(DEBUG) << r[0][0];
+		//LOG(DEBUG) << r[0][0];
 
 		update[0] = r[0][0] * f[0] + r[0][1] * f[1] + r[0][2] * f[2];
 		update[1] = r[1][0] * f[0] + r[1][1] * f[1] + r[1][2] * f[2];
 		update[2] = r[2][0] * f[0] + r[2][1] * f[1] + r[2][2] * f[2];
 
-		LOG(DEBUG) << update[0] <<" "<< update[1] << " " << update[2];
+		//LOG(DEBUG) << update[0] <<" "<< update[1] << " " << update[2];
 		u -= update[0];
 		v -= update[1];
 		t -= update[2];
@@ -151,7 +154,7 @@ bool RotationBezierSurface::hit(const Ray & ray, float t0, float t1, float & t)
 
 	u_ = u;
 	v_ = v;
-	LOG(DEBUG) << u << " " << v;
+	//LOG(DEBUG) << u << " " << v;
 
 	if (tempt < t0 || tempt >= t1)
 	{
@@ -159,7 +162,7 @@ bool RotationBezierSurface::hit(const Ray & ray, float t0, float t1, float & t)
 	}
 
 	t = tempt;
-	LOG(DEBUG) << t;
+	//LOG(DEBUG) << t;
 	return true;
 }
 

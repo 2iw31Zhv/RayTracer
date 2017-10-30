@@ -179,7 +179,6 @@ int solve_quadratic(double * x, double a, double b, double c)
 	{
 		return SolveP2(x, b / a, c / a);
 	}
-	return 0;
 }
 
 // a x^3 + b x^2 + c x + d = 0

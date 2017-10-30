@@ -49,8 +49,8 @@ int   SolveP2(double *x, double a, double b) {			// solve equation x^2 + a*x + b
 	double D = 0.25*a*a - b;
 	if (D >= 0) {
 		D = sqrt(D);
-		x[0] = 0.5*a + D;
-		x[1] = 0.5*a - D;
+		x[0] = -0.5*a + D;
+		x[1] = -0.5*a - D;
 		return 2;
 	}
 	x[0] = 0.5*a;

@@ -36,7 +36,7 @@ RayTracingScene::~RayTracingScene()
 	delete[] screenbuffer_;
 }
 
-void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QColor & color, const Ray& light_ray)
+void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QColor & color, const Point3F& light_source)
 {
 	color = QColor(0, 0, 0);
 
@@ -59,10 +59,13 @@ void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QCo
 	Material& hit_material = hit_object->get_material();
 	//if is not shadow color
 	Point3F normal = hit_object->hit_normal(ray, time);
+
 	if (hit_material.is_normal_texture)
 	{
 		normal = hit_object->change_normal(ray, time);
 	}
+
+	Ray light_ray{ light_source, ray.at(time) };
 	Point3F l = light_ray.d().reverse();
 	Point3F d = ray.d();
 	Point3F h = (l - d).normalize();
@@ -153,7 +156,7 @@ void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QCo
 					weight,
 					depth - 1,
 					reflectColor,
-					light_ray);
+					light_source);
 				color = color + k * reflectColor;
 			}
 			else
@@ -172,14 +175,14 @@ void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QCo
 					weight * R,
 					depth - 1,
 					reflectColor,
-					light_ray);
+					light_source);
 
 				
 				ray_tracer(refractRay,
 					weight * (1 - R),
 					depth - 1,
 					refractColor,
-					light_ray);
+					light_source);
 
 				color = color + k * (reflectColor + refractColor);
 			}
@@ -189,8 +192,9 @@ void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QCo
 
 void RayTracingScene::precompute()
 {
-	Ray light_ray(Point3F(0.0f, height() * 0.5f, height() * 0.2f),
-		Point3F(0.0f, 0.0f, height() * 0.4f));
+	Point3F light_source(0.0f, height() * 0.495f, height() * 0.2f);
+	//Ray light_ray(Point3F(0.0f, height() * 0.5f, height() * 0.2f),
+	//	Point3F(0.0f, 0.0f, height() * 0.4f));
 
 	set_scene();
 
@@ -203,7 +207,7 @@ void RayTracingScene::precompute()
 				Point3F(1.0f, 1.0f, 1.0f), 
 				20, 
 				screenbuffer_[j * width() + i],
-				light_ray);
+				light_source);
 		}
 	}
 	is_finish_trace_ = true;
@@ -249,7 +253,7 @@ void RayTracingScene::set_scene()
 	pv3.push_back(Vertice(0.0f + width() * 0.5f, 0.0f + height() * 0.5f, 0.0f - height() * 1.0f));
 	pv3.push_back(Vertice(0.0f + width() * 0.5f, 0.0f + height() * 0.5f, 0.0f + height() * 1.0f));
 	Polygonal * ply3 = new Polygonal(pv3);
-	//ply3->get_material().lambert_color = Qt::blue;
+	ply3->get_material().lambert_color = Qt::blue;
 	//ply3->get_material().dielectric = 20.0f;
 	surface_vec_.push_back(ply3);
 
@@ -259,7 +263,7 @@ void RayTracingScene::set_scene()
 	pv4.push_back(Vertice(0.0f - width() * 0.5f, 0.0f + height() * 0.5f, 0.0f - height() * 1.0f));
 	pv4.push_back(Vertice(0.0f - width() * 0.5f, 0.0f + height() * 0.5f, 0.0f + height() * 1.0f));
 	Polygonal * ply4 = new Polygonal(pv4);
-	//ply4->get_material().lambert_color = Qt::yellow;
+	ply4->get_material().lambert_color = Qt::green;
 	//ply4->get_material().dielectric = 20.0f;
 	surface_vec_.push_back(ply4);
 
@@ -283,12 +287,12 @@ void RayTracingScene::set_scene()
 	surface_vec_.push_back(ply6);
 
 
-	Sphere * sph2 = new Sphere(Vertice(-100, -35, height() * 0.15f), 30);
+	Sphere * sph2 = new Sphere(Vertice(-200, -70, height() * 0.3f), 30);
 	sph2->get_material().lambert_color = Qt::red;
 	sph2->get_material().phong_color = Qt::yellow;
 	sph2->get_material().phong_ratio = 16;
 
-	//surface_vec_.push_back(sph2);
+	surface_vec_.push_back(sph2);
 
 	//Sphere * sph3 = new Sphere(Vertice(200, -70, height() * 0.001f), 60);
 	//sph3->get_material().lambert_color = Qt::blue;
@@ -324,8 +328,8 @@ void RayTracingScene::set_scene()
 		QPointF(0.0, height() * 0.4),
 		Vertice(-200, -70, height() * 0.3f),
 		0.7);
-	rbs->get_material().lambert_color = Qt::blue;
-	//rbs->get_material().dielectric = 1.05;
+	rbs->get_material().lambert_color = Qt::yellow;
+	//rbs->get_material().dielectric = 1.05f;
 	rbs->get_material().alpha = Point3F(0.001, 0.001, 1e-5);
 	rbs->get_material().phong_color = QColor(100, 100, 100);
 	rbs->get_material().phong_ratio = 32;
