@@ -153,7 +153,7 @@ bool RotationBezier2::hit(const Ray & ray, float t0, float t1, float & t)
 	// solve t from u
 	
 	std::vector<double> tvec;
-	if (fabs(ray.d().y()) < 1e-5)
+	if (fabs(ray.d().y()) < 1e-3)
 	{
 		if (uvec.size() > 1)
 		{
