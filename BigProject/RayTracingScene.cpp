@@ -16,9 +16,11 @@
 #include "Mesh.h"
 
 #include "easylogging++\easylogging++.h"
+#include <fstream>
+#include <iostream>
 
 RayTracingScene::RayTracingScene():
-	background_color_(QColor(0, 0, 0)),
+	background_color_(QColor(20, 20, 20)),
 	environment_color_(QColor(50, 50, 50)),
 	light_color_(Point3F(0.7, 0.7, 0.7)),
 	is_finish_trace_(false)
@@ -36,7 +38,13 @@ RayTracingScene::~RayTracingScene()
 	delete[] screenbuffer_;
 }
 
-void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QColor & color, const Point3F& light_source)
+void RayTracingScene::ray_tracer(const Ray & ray, 
+	Point3F weight, 
+	int depth, 
+	QColor & color, 
+	const Point3F& light_source,
+	int i,
+	int j)
 {
 	color = QColor(0, 0, 0);
 
@@ -57,8 +65,9 @@ void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QCo
 	using std::max;
 
 	Material& hit_material = hit_object->get_material();
-	//if is not shadow color
+	
 	Point3F normal = hit_object->hit_normal(ray, time);
+	Point3F hit_point = ray.at(time);
 
 	if (hit_material.is_normal_texture)
 	{
@@ -70,30 +79,32 @@ void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QCo
 	Point3F d = ray.d();
 	Point3F h = (l - d).normalize();
 	
-	
-	if (!hit_material.is_dielectric())
+	if (!isInShadow(light_source, hit_point, i, j))
 	{
-		QColor lambert;
+		if (!hit_material.is_dielectric())
+		{
+			QColor lambert;
 
-		// texture
-		if (hit_material.has_texture() && !(hit_material.is_normal_texture))
-		{
-			lambert = hit_object->read_texture(ray, time);
-			color = weight * lambert;
+			// texture
+			if (hit_material.has_texture() && !(hit_material.is_normal_texture))
+			{
+				lambert = hit_object->read_texture(ray, time);
+				color = weight * lambert;
+			}
+			else
+			{
+				lambert = hit_material.lambert_color;
+				color = weight * (environment_color_
+					+ light_color_ *
+					// two facets lighting
+					(lambert * fabs(normal.dot(l))));
+			}
 		}
-		else
-		{
-			lambert = hit_material.lambert_color;
-			color = weight * (environment_color_
-				+ light_color_ *
-				// two facets lighting
-				(lambert * fabs(normal.dot(l))));
-		}
+
+		//phong
+		color = color + weight * hit_material.phong_color
+			* pow(h.dot(normal), hit_material.phong_ratio);
 	}
-
-	//phong
-	color = color + weight * hit_material.phong_color 
-		* pow(h.dot(normal), hit_material.phong_ratio);
 
 	if (depth > 1)
 	{
@@ -156,7 +167,9 @@ void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QCo
 					weight,
 					depth - 1,
 					reflectColor,
-					light_source);
+					light_source,
+					i,
+					j);
 				color = color + k * reflectColor;
 			}
 			else
@@ -175,14 +188,18 @@ void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QCo
 					weight * R,
 					depth - 1,
 					reflectColor,
-					light_source);
+					light_source,
+					i,
+					j);
 
 				
 				ray_tracer(refractRay,
 					weight * (1 - R),
 					depth - 1,
 					refractColor,
-					light_source);
+					light_source,
+					i,
+					j);
 
 				color = color + k * (reflectColor + refractColor);
 			}
@@ -190,24 +207,57 @@ void RayTracingScene::ray_tracer(const Ray & ray, Point3F weight, int depth, QCo
 	}
 }
 
+void RayTracingScene::evaluate_depth(const Ray & ray, double & depth)
+{
+	float time;
+	Surface * hit_object = nullptr;
+	depth = FLT_MAX;
+	if (!check_hit(ray, time, hit_object))
+	{
+		return;
+	}
+
+	Point3F hit_point = ray.at(time);
+	Point3F ray_source = ray.e();
+
+	depth = sqrt(pow2(hit_point.x() - ray_source.x())
+		+ pow2(hit_point.y() - ray_source.y())
+		+ pow2(hit_point.z() - ray_source.z()));
+
+}
+
+bool RayTracingScene::isInShadow(const Point3F& light_source,
+	const Point3F & hit_point, 
+	int i, int j)
+{
+	double hit_distance = sqrt(pow2(light_source.x() - hit_point.x())
+		+ pow2(light_source.y() - hit_point.y())
+		+ pow2(light_source.z() - hit_point.z()));
+
+	double depth;
+	evaluate_depth(Ray(light_source, hit_point),
+		depth);
+	return hit_distance > depth + 0.008;
+}
+
 void RayTracingScene::precompute()
 {
 	Point3F light_source(0.0f, height() * 0.495f, height() * 0.2f);
-	//Ray light_ray(Point3F(0.0f, height() * 0.5f, height() * 0.2f),
-	//	Point3F(0.0f, 0.0f, height() * 0.4f));
-
 	set_scene();
 
 	screenbuffer_ = new QColor[width() * height()];
+
+	Point3F eye_source(0.0f, 0.0f, -height() * 0.5f);
 	for (int j = 0; j < height(); ++j)
 	{
 		for (int i = 0; i < width(); ++i)
 		{
-			ray_tracer(cast_ray(i, j), 
+			ray_tracer(cast_ray(eye_source, i, j), 
 				Point3F(1.0f, 1.0f, 1.0f), 
 				20, 
 				screenbuffer_[j * width() + i],
-				light_source);
+				light_source,
+				i, j);
 		}
 	}
 	is_finish_trace_ = true;
@@ -330,7 +380,7 @@ void RayTracingScene::set_scene()
 		0.7);
 	rbs->get_material().lambert_color = Qt::yellow;
 	//rbs->get_material().dielectric = 1.05f;
-	rbs->get_material().alpha = Point3F(0.001, 0.001, 1e-5);
+	rbs->get_material().alpha = Point3F(1e-5, 0.001, 0.001);
 	rbs->get_material().phong_color = QColor(100, 100, 100);
 	rbs->get_material().phong_ratio = 32;
 	surface_vec_.push_back(rbs);
@@ -356,9 +406,9 @@ void RayTracingScene::paintEvent(QPaintEvent * e)
 	painter.end();
 }
 
-Ray RayTracingScene::cast_ray(int i, int j)
+Ray RayTracingScene::cast_ray(const Point3F& source, int i, int j)
 {
-	return Ray(Point3F(0.0f, 0.0f, -height() * 0.5f),
+	return Ray(source,
 		Point3F(i - width() * 0.5f, height() * 0.5f - j, 0.0f));
 }
 

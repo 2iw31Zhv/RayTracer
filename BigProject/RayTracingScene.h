@@ -29,10 +29,23 @@ private:
 	bool is_finish_trace_;
 
 	QColor * screenbuffer_;
-	
-	Ray cast_ray(int i, int j);
+
+	Ray cast_ray(const Point3F& source, int i, int j);
 	bool check_hit(const Ray& ray, float& t, Surface *& hit_object);
 
-	void ray_tracer(const Ray& ray, Point3F weight, int depth, QColor& color, const Point3F& light_source);
+	void ray_tracer(const Ray& ray, 
+		Point3F weight, 
+		int depth, 
+		QColor& color, 
+		const Point3F& light_source,
+		int i,
+		int j);
 	
+	void evaluate_depth(const Ray& ray,
+		double& depth);
+
+	bool isInShadow(const Point3F& light_source,
+		const Point3F& hit_point,
+		int i,
+		int j);
 };
