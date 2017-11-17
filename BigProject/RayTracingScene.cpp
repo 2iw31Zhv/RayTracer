@@ -260,6 +260,8 @@ void RayTracingScene::precompute()
 				i, j);
 		}
 	}
+
+	save_img("result.png");
 	is_finish_trace_ = true;
 }
 
@@ -385,6 +387,31 @@ void RayTracingScene::set_scene()
 	rbs->get_material().phong_ratio = 32;
 	surface_vec_.push_back(rbs);
 
+}
+
+void RayTracingScene::save_img(const std::string& filename)
+{
+	FIBITMAP * bitmap = FreeImage_Allocate(width(), height(), 32, 8, 8, 8);
+
+	for (size_t i = 0; i < FreeImage_GetHeight(bitmap); ++i)
+	{
+		BYTE * bitsLine = FreeImage_GetScanLine(bitmap, i);
+		for (size_t j = 0; j < FreeImage_GetWidth(bitmap); ++j)
+		{
+			bitsLine[FI_RGBA_RED] = screenbuffer_[(height() - i - 1) * width() + j].red();
+			bitsLine[FI_RGBA_GREEN] = screenbuffer_[(height() - i - 1) * width() + j].green();
+			bitsLine[FI_RGBA_BLUE] = screenbuffer_[(height() - i - 1) * width() + j].blue();
+			bitsLine[FI_RGBA_ALPHA] = screenbuffer_[(height() - i - 1) * width() + j].alpha();
+			bitsLine += 4;
+		}
+	}
+
+	if (!FreeImage_Save(FIF_PNG, bitmap, filename.c_str(), PNG_DEFAULT))
+	{
+		exit(1);
+	}
+
+	FreeImage_Unload(bitmap);
 }
 
 void RayTracingScene::paintEvent(QPaintEvent * e)

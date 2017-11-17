@@ -17,6 +17,7 @@ public:
 
 	void precompute();
 	void set_scene();
+	void save_img(const std::string& filename);
 protected:
 	virtual void paintEvent(QPaintEvent * e);
 
