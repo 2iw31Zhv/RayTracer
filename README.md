@@ -3,7 +3,7 @@ This is a ray tracing software. Unlike most ray tracing softwares, it aims to ut
 
 Currently, it is only supported to be built on Windows 10. In future we may provide the Linux version.
 
-## Dependency
+## Dependencies
 
 ### [Qt 5.7.0]
 This is a basic GUI library. We use it to construct the main UI interface.
