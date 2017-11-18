@@ -5,14 +5,17 @@ Currently, it is only supported to be built on Windows 10. In future we may prov
 
 ## Dependency
 
-[1]: https://www1.qt.io/qt5-7/ "Qt 5.7.0"
+### [Qt]
 This is a basic GUI library. We use it to construct the main UI interface.
-
-[2]: https://sourceforge.net/projects/freeimage/ "FreeImage"
+### [FreeImage]
 A light-weighted library for constructing and saving images.
-
-[3]: https://github.com/muflihun/easyloggingpp "Easylogging++"
+### [Easyloggingpp]
 A light-weighted library for logging. 
+
+[Qt]:	https://www1.qt.io/qt5-7/	"Qt 5.7.0"
+[FreeImage]:	https://sourceforge.net/projects/freeimage/	"FreeImage"
+[Easyloggingpp]:	https://github.com/muflihun/easyloggingpp	"Easylogging++"
+
 
 ## Licenses
 
