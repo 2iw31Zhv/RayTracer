@@ -12,6 +12,26 @@ Mesh::Mesh() :
 
 }
 
+Mesh::Mesh(const Mesh& mesh)
+{
+	for (const auto& v : mesh.vertices_)
+	{
+		vertices_.insert(v);
+	}
+
+	for (const auto& q : mesh.quadfacets_)
+	{
+		quadfacets_.insert(q);
+	}
+
+	for (const auto& t : mesh.trifacets_)
+	{
+		trifacets_.insert(t);
+	}
+
+	bounding_box_.reset(new BoundingBox(mesh.bounding_box()));
+}
+
 void Mesh::reset()
 {
 	vertices_.clear();
@@ -37,6 +57,7 @@ void Mesh::insert(const TriFacet& f)
 	size_t fid = trifacets_.size() + 1;
 	trifacets_.insert(std::make_pair(fid, f));
 }
+
 const Vertice& Mesh::vertice_at(size_t vid) const
 {
 	return vertices_.at(vid);

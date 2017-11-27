@@ -15,7 +15,7 @@ class Mesh;
 class BezierCurve;
 
 void convert(Mesh& mesh, const BezierCurve& curv, int angle_num);
-
+bool load_obj(Mesh& mesh, const std::string filename, Point3F center, float scale);
 QPointF orthogonal_project(const Vertice& v);
 
 QColor operator+(const QColor& lhs, const QColor& rhs);

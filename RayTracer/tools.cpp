@@ -6,7 +6,10 @@
 #include "Mesh.h"
 #include "Geometry.h"
 #include "poly34.h"
+#include <fstream>
+#include <iostream>
 
+using namespace std;
 
 void convert(Mesh& mesh, const BezierCurve& curv, const int angle_num)
 {
@@ -68,6 +71,70 @@ void convert(Mesh& mesh, const BezierCurve& curv, const int angle_num)
 	mesh.insert(TriFacet(tri_start_id + angle_num,
 		tri_start_id + 1,
 		(floors - 2) * angle_num + 2));
+}
+
+bool load_obj(Mesh & mesh, const std::string filename, Point3F center, float scale)
+{
+	ifstream fin(filename);
+
+	if (!fin.is_open())
+	{
+		std::cerr << "Cannot open the obj file!" << std::endl;
+		return false;
+	}
+
+	std::string mark;
+	float position[3];
+	unsigned short indices[3];
+	char buffer[1024];
+
+	// currently, we only support triangulated facets
+	int index = 0;
+	while (fin >> mark)
+	{
+		if (mark == "v")
+		{
+			fin >> position[0] >> position[1] >> position[2];
+			Vertice v(position[0], position[1], position[2]);
+			mesh.insert(v * scale + center);
+		}
+		else if (mark == "vn")
+		{
+			fin.getline(buffer, 1024);
+			index++;
+		}
+		else if (mark == "vt")
+		{
+			fin.getline(buffer, 1024);
+			//fin >> position[0] >> position[1] >> position[2];
+			//Vt_.push_back(Vector3f(position[0], position[1], position[2]));
+			//clog << "vt: " << position[0] << ", " << position[1] << ", " << position[2] << endl;
+
+		}
+		else if (mark == "f")
+		{
+			fin >> indices[0] >> indices[1] >> indices[2];
+			mesh.insert(TriFacet(make_tuple(indices[0], indices[1], indices[2])));
+			//clog << "f: " << indices[0] << ", " << indices[1] << ", " << indices[2] << endl;
+			//F_.push_back(indices[0] - 1);
+			//F_.push_back(indices[1] - 1);
+			//F_.push_back(indices[2] - 1);
+		}
+		else if (mark == "#")
+		{
+			fin.getline(buffer, 1024);
+			//clog << "this is a comment line \n";
+		}
+		else
+		{
+			fin.getline(buffer, 1024);
+			//clog << "this is a comment line \n";
+		}
+	}
+
+	clog << "the model has " << mesh.trifacets_num() << "faces and " << mesh.vertices_num()
+		<< " vertices. \n";
+	return true;
 }
 
 QPointF orthogonal_project(const Vertice& v)

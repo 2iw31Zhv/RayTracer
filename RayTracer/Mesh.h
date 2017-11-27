@@ -19,6 +19,7 @@ private:
 	std::shared_ptr<BoundingBox> bounding_box_;
 public:
 	Mesh();
+	Mesh(const Mesh& mesh);
 
 	void reset();
 	void insert(const Vertice& p);

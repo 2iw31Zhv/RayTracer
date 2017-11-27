@@ -11,6 +11,7 @@
 #include "Sphere.h"
 #include "Triangle.h"
 #include "tools.h"
+#include "MeshSurface.h"
 
 #include "Bezier.h"
 #include "Mesh.h"
@@ -252,6 +253,7 @@ void RayTracingScene::precompute()
 	{
 		for (int i = 0; i < width(); ++i)
 		{
+			//std::cerr << "CALCULATE: " << double(j * width() + i) / width() / height() << std::endl;
 			ray_tracer(cast_ray(eye_source, i, j), 
 				Point3F(1.0f, 1.0f, 1.0f), 
 				20, 
@@ -344,7 +346,7 @@ void RayTracingScene::set_scene()
 	sph2->get_material().phong_color = Qt::yellow;
 	sph2->get_material().phong_ratio = 16;
 
-	surface_vec_.push_back(sph2);
+	//surface_vec_.push_back(sph2);
 
 	//Sphere * sph3 = new Sphere(Vertice(200, -70, height() * 0.001f), 60);
 	//sph3->get_material().lambert_color = Qt::blue;
@@ -387,6 +389,15 @@ void RayTracingScene::set_scene()
 	rbs->get_material().phong_ratio = 32;
 	surface_vec_.push_back(rbs);
 
+	Mesh mesh1;
+	load_obj(mesh1, "body.obj", Vertice(250, -70, height() * 0.2f), 1.0);
+	MeshSurface * meshSur1 = new MeshSurface(mesh1);
+	meshSur1->get_material().lambert_color = QColor(255, 100, 0);
+	//meshSur1->get_material().dielectric = 1.05f;
+	meshSur1->get_material().alpha = Point3F(1e-5, 0.001, 0.001);
+	meshSur1->get_material().phong_color = QColor(100, 100, 100);
+	meshSur1->get_material().phong_ratio = 32;
+	surface_vec_.push_back(meshSur1);
 }
 
 void RayTracingScene::save_img(const std::string& filename)
