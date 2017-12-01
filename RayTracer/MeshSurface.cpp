@@ -8,16 +8,19 @@ bool MeshSurface::hit(const Ray & ray, float t0, float t1, float & t)
 {
 	times_.clear();
 
-	// bounding box test :: TODO
-
+	// bounding box test
 	Point3F bmin(mesh_.bounding_box().min_x(),
 		mesh_.bounding_box().min_y(),
 		mesh_.bounding_box().min_z());
 	Point3F bmax(mesh_.bounding_box().max_x(),
 		mesh_.bounding_box().max_y(),
 		mesh_.bounding_box().max_z());
-
-
+	Point3F diag = bmax - bmin;
+	Cuboid box(bmin, diag.x(), diag.y(), diag.z());
+	if (!box.hit(ray, t0, t1, t))
+	{
+		return false;
+	}
 
 	for (int i = 1; i <= mesh_.trifacets_num(); ++i)
 	{

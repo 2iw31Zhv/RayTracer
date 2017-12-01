@@ -18,8 +18,8 @@ Polygonal::Polygonal(const std::vector<Vertice>& vertices)
 
 	assert(vertices_.size() >= 3);
 
-	normal_ = ((vertices_[2] - vertices_[1]).cross(
-		vertices_[1] - vertices_[0])).normalize();
+	normal_ = ((vertices_[1] - vertices_[0]).cross(
+		vertices_[vertices_.size() - 1] - vertices_[0])).normalize();
 
 	assert(is_coplanar_());
 	assert(is_convex_());
@@ -28,7 +28,7 @@ Polygonal::Polygonal(const std::vector<Vertice>& vertices)
 bool Polygonal::hit(const Ray & ray, float t0, float t1, float & t)
 {
 	float dn = ray.d().dot(normal());
-	if (fabs(dn) < 1e-3f)
+	if (fabs(dn) < 0.008f)
 	{
 		return false;
 	}
@@ -95,7 +95,7 @@ bool Polygonal::hit(const Ray & ray, float t0, float t1, float & t)
 		float py = project_crs.y();
 
 		float proj_dnmy = p1y - p2y;
-		if (fabs(proj_dnmy) < 1e-3f) return;
+		if (fabs(proj_dnmy) < 0.008f) return;
 
 		float proj_t = ((p1x - p2x) * (py - p1y) 
 			- (px - p1x) * (p1y - p2y)) / proj_dnmy;

@@ -96,7 +96,7 @@ void RayTracingScene::ray_tracer(const Ray & ray,
 				lambert = hit_material.lambert_color;
 				color = weight * (environment_color_
 					+ light_color_ *
-					// two facets lighting
+					// two facet lighting
 					(lambert * fabs(normal.dot(l))));
 			}
 		}
@@ -276,7 +276,7 @@ void RayTracingScene::set_scene()
 	sph1->get_material().dielectric = 3.5;
 	sph1->get_material().alpha = Point3F(0.005f, 0.001f, 0.001f);
 
-	surface_vec_.push_back(sph1);
+	//surface_vec_.push_back(sph1);
 /*	Cuboid * cub1 = new Cuboid(Vertice(0.0f - width() * 0.5f, 0.0f - height() * 0.5f, 0.0f - height() * 1.0f), width(), height() * 2.0f, height());
 	cub1->get_material().lambert_color = Qt::lightGray;
 	cub1->get_material().dielectric = 1.0*/;
@@ -391,7 +391,7 @@ void RayTracingScene::set_scene()
 	surface_vec_.push_back(rbs);
 
 	Mesh mesh1;
-	load_obj(mesh1, "teapot_n.obj", Vertice(250, -70, height() * 0.2f), 50);
+	load_obj(mesh1, "teapot_n.obj", Vertice(100, -height() * 0.4f, height() * 0.15f), 300);
 	MeshSurface * meshSur1 = new MeshSurface(mesh1);
 	meshSur1->get_material().lambert_color = QColor(255, 100, 0);
 	//meshSur1->get_material().dielectric = 1.05f;
