@@ -28,7 +28,7 @@ Polygonal::Polygonal(const std::vector<Vertice>& vertices)
 bool Polygonal::hit(const Ray & ray, float t0, float t1, float & t)
 {
 	float dn = ray.d().dot(normal());
-	if (fabs(dn) < 0.008f)
+	if (fabs(dn) < 1e-3f)
 	{
 		return false;
 	}
@@ -95,7 +95,7 @@ bool Polygonal::hit(const Ray & ray, float t0, float t1, float & t)
 		float py = project_crs.y();
 
 		float proj_dnmy = p1y - p2y;
-		if (fabs(proj_dnmy) < 0.008f) return;
+		if (fabs(proj_dnmy) < 1e-3f) return;
 
 		float proj_t = ((p1x - p2x) * (py - p1y) 
 			- (px - p1x) * (p1y - p2y)) / proj_dnmy;

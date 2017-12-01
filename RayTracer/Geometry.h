@@ -38,7 +38,7 @@ public:
 	BoundingBox(const Vertice& vmin = Vertice(), const Vertice& vmax = Vertice()) :
 		data_(std::make_pair(vmin, vmax)) {}
 	BoundingBox& add(const Vertice& v);
-
+	BoundingBox& add(const BoundingBox& b);
 	const float& min_x() const { return data_.first.x(); }
 	const float& max_x() const { return data_.second.x(); }
 	const float& min_y() const { return data_.first.y(); }

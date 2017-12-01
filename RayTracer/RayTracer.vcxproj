@@ -186,6 +186,8 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshSurface.cpp" />
+    <ClCompile Include="Octree.cpp" />
+    <ClCompile Include="OctreeNode.cpp" />
     <ClCompile Include="PaintView.cpp" />
     <ClCompile Include="Point3.cpp" />
     <ClCompile Include="poly34.cpp" />
@@ -246,6 +248,8 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshSurface.h" />
+    <ClInclude Include="Octree.h" />
+    <ClInclude Include="OctreeNode.h" />
     <ClInclude Include="Point3.h" />
     <ClInclude Include="poly34.h" />
     <ClInclude Include="Polygonal.h" />

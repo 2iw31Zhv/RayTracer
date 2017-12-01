@@ -276,7 +276,7 @@ void RayTracingScene::set_scene()
 	sph1->get_material().dielectric = 3.5;
 	sph1->get_material().alpha = Point3F(0.005f, 0.001f, 0.001f);
 
-	//surface_vec_.push_back(sph1);
+	surface_vec_.push_back(sph1);
 /*	Cuboid * cub1 = new Cuboid(Vertice(0.0f - width() * 0.5f, 0.0f - height() * 0.5f, 0.0f - height() * 1.0f), width(), height() * 2.0f, height());
 	cub1->get_material().lambert_color = Qt::lightGray;
 	cub1->get_material().dielectric = 1.0*/;
