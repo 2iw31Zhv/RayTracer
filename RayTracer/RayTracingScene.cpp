@@ -9,7 +9,6 @@
 #include "RotationBezier2.h"
 #include "Surface.h"
 #include "Sphere.h"
-#include "Triangle.h"
 #include "tools.h"
 #include "MeshSurface.h"
 
@@ -251,6 +250,8 @@ void RayTracingScene::precompute()
 	Point3F eye_source(0.0f, 0.0f, -height() * 0.5f);
 	for (int j = 0; j < height(); ++j)
 	{
+		std::cerr << "CALCULATE: " << double(j * width()) / width() / height() << std::endl;
+
 		for (int i = 0; i < width(); ++i)
 		{
 			//std::cerr << "CALCULATE: " << double(j * width() + i) / width() / height() << std::endl;
@@ -390,7 +391,7 @@ void RayTracingScene::set_scene()
 	surface_vec_.push_back(rbs);
 
 	Mesh mesh1;
-	load_obj(mesh1, "body.obj", Vertice(250, -70, height() * 0.2f), 1.0);
+	load_obj(mesh1, "teapot_n.obj", Vertice(250, -70, height() * 0.2f), 50);
 	MeshSurface * meshSur1 = new MeshSurface(mesh1);
 	meshSur1->get_material().lambert_color = QColor(255, 100, 0);
 	//meshSur1->get_material().dielectric = 1.05f;

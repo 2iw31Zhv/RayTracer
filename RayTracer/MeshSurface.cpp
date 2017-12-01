@@ -1,11 +1,24 @@
 #include "MeshSurface.h"
-#include "Triangle.h"
+#include "Polygonal.h"
+#include "Cuboid.h"
 
 using namespace std;
 
 bool MeshSurface::hit(const Ray & ray, float t0, float t1, float & t)
 {
 	times_.clear();
+
+	// bounding box test :: TODO
+
+	Point3F bmin(mesh_.bounding_box().min_x(),
+		mesh_.bounding_box().min_y(),
+		mesh_.bounding_box().min_z());
+	Point3F bmax(mesh_.bounding_box().max_x(),
+		mesh_.bounding_box().max_y(),
+		mesh_.bounding_box().max_z());
+
+
+
 	for (int i = 1; i <= mesh_.trifacets_num(); ++i)
 	{
 		const TriFacet& f = mesh_.trifacet_at(i);
@@ -13,9 +26,15 @@ bool MeshSurface::hit(const Ray & ray, float t0, float t1, float & t)
 		const Vertice& v2 = mesh_.vertice_at(std::get<1>(f));
 		const Vertice& v3 = mesh_.vertice_at(std::get<2>(f));
 
-		Triangle tr(v1, v2, v3);
+		vector<Vertice> pvec;
+		pvec.push_back(v1);
+		pvec.push_back(v2);
+		pvec.push_back(v3);
+
+		Polygonal poly(pvec);
+
 		float temp_t;
-		if (tr.hit(ray, t0, t1, temp_t))
+		if (poly.hit(ray, t0, t1, temp_t))
 		{
 			times_.push_back(make_pair(temp_t, i));
 		}
@@ -44,8 +63,12 @@ Point3F MeshSurface::hit_normal(const Ray & ray, float t) const
 	const Vertice& v1 = mesh_.vertice_at(std::get<0>(f));
 	const Vertice& v2 = mesh_.vertice_at(std::get<1>(f));
 	const Vertice& v3 = mesh_.vertice_at(std::get<2>(f));
+	
+	vector<Vertice> pvec;
+	pvec.push_back(v1);
+	pvec.push_back(v2);
+	pvec.push_back(v3);
 
-	Triangle tr(v1, v2, v3);
-
-	return tr.normal();
+	Polygonal poly(pvec);
+	return poly.normal();
 }

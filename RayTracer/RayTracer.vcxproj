@@ -196,7 +196,6 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="tools.cpp" />
-    <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.h">
@@ -252,7 +251,6 @@
     <ClInclude Include="Polygonal.h" />
     <ClInclude Include="RotationBezier2.h" />
     <ClInclude Include="RotationBezierSurface.h" />
-    <ClInclude Include="Triangle.h" />
     <CustomBuild Include="RayTracingScene.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing RayTracingScene.h...</Message>
