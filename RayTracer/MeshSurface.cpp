@@ -1,6 +1,8 @@
 #include "MeshSurface.h"
 #include "Polygonal.h"
 #include "Cuboid.h"
+#include "Octree.h"
+#include <iostream>
 
 using namespace std;
 

@@ -2,7 +2,12 @@
 #include "Polygonal.h"
 #include "Geometry.h"
 
-OctreeNode::OctreeNode(OctreeNode * parent,
+using namespace std;
+
+OctreeNode::OctreeNode(
+	const Vertice& ref_bmin,
+	const Vertice& ref_bmax,
+	OctreeNode * parent,
 	OctreeNode * c000,
 	OctreeNode * c001,
 	OctreeNode * c010,
@@ -11,6 +16,8 @@ OctreeNode::OctreeNode(OctreeNode * parent,
 	OctreeNode * c101,
 	OctreeNode * c110,
 	OctreeNode * c111) :
+	ref_bmin_(ref_bmin),
+	ref_bmax_(ref_bmax),
 	parent(parent),
 	c000(c000),
 	c001(c001),
@@ -37,4 +44,26 @@ void OctreeNode::add_face(const Polygonal & poly)
 {
 	facets_.push_back(new Polygonal(poly));
 	bounding_box_->add(poly.bounding_box());
+}
+
+bool OctreeNode::soft_has(const Polygonal & poly)
+{
+	bool is_not_have = true;
+
+	const vector<Vertice> & vertices = poly.get_vertices();
+
+	for (const auto& v : vertices)
+	{
+		if (v.x() >= ref_bmin_.x() &&
+			v.y() >= ref_bmin_.y() &&
+			v.z() >= ref_bmin_.z() &&
+			v.x() <= ref_bmax_.x() &&
+			v.y() <= ref_bmax_.y() &&
+			v.z() <= ref_bmax_.z())
+		{
+			is_not_have = false;
+		}
+	}
+
+	return !is_not_have;
 }

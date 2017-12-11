@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include "Geometry.h"
 
 class BoundingBox;
 class Polygonal;
@@ -10,6 +11,9 @@ class OctreeNode
 private:
 	std::shared_ptr<BoundingBox> bounding_box_;
 	std::vector<Polygonal *> facets_;
+
+	Vertice ref_bmin_;
+	Vertice ref_bmax_;
 public:
 	OctreeNode * parent;
 
@@ -23,7 +27,9 @@ public:
 	OctreeNode * c111;
 public:
 
-	OctreeNode(OctreeNode * parent = nullptr,
+	OctreeNode(const Vertice& ref_bmin,
+		const Vertice& ref_bmax,
+		OctreeNode * parent = nullptr,
 		OctreeNode * c000 = nullptr,
 		OctreeNode * c001 = nullptr,
 		OctreeNode * c010 = nullptr,
@@ -37,5 +43,6 @@ public:
 
 	void add_face(const Polygonal& poly);
 
-
+	const std::vector<Polygonal *> & get_faces() { return facets_; }
+	bool soft_has(const Polygonal& poly);
 };

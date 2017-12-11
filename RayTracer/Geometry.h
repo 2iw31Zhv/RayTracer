@@ -14,6 +14,7 @@ public:
 	Vertice(float x = 0.0f, float y = 0.0f, float z = 0.0f) :
 		Point3F(x, y, z) {}
 	Vertice(const Point3F& p) : Point3F(p) {}
+
 };
 
 class Ray
