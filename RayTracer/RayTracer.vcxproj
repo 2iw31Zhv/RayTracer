@@ -248,6 +248,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshSurface.h" />
+    <ClInclude Include="mytimer.h" />
     <ClInclude Include="Octree.h" />
     <ClInclude Include="OctreeNode.h" />
     <ClInclude Include="Point3.h" />

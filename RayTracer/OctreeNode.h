@@ -10,7 +10,7 @@ class OctreeNode
 {
 private:
 	std::shared_ptr<BoundingBox> bounding_box_;
-	std::vector<Polygonal *> facets_;
+	std::vector< std::pair<Polygonal *, int>> facets_;
 
 	Vertice ref_bmin_;
 	Vertice ref_bmax_;
@@ -41,8 +41,9 @@ public:
 
 	~OctreeNode();
 
-	void add_face(const Polygonal& poly);
+	void add_face(const Polygonal& poly, int face_id);
 
-	const std::vector<Polygonal *> & get_faces() { return facets_; }
+	const std::vector<std::pair<Polygonal *, int>> & get_faces() const { return facets_; }
 	bool soft_has(const Polygonal& poly);
+	const std::shared_ptr<BoundingBox>& bounding_box() const { return bounding_box_; }
 };

@@ -36,13 +36,13 @@ OctreeNode::~OctreeNode()
 {
 	for (auto & pf : facets_)
 	{
-		delete pf;
+		delete pf.first;
 	}
 }
 
-void OctreeNode::add_face(const Polygonal & poly)
+void OctreeNode::add_face(const Polygonal & poly, int face_id)
 {
-	facets_.push_back(new Polygonal(poly));
+	facets_.push_back(make_pair(new Polygonal(poly), face_id));
 	bounding_box_->add(poly.bounding_box());
 }
 

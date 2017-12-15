@@ -19,6 +19,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "mytimer.h"
+
 RayTracingScene::RayTracingScene():
 	background_color_(QColor(20, 20, 20)),
 	environment_color_(QColor(50, 50, 50)),
@@ -248,13 +250,12 @@ void RayTracingScene::precompute()
 	screenbuffer_ = new QColor[width() * height()];
 
 	Point3F eye_source(0.0f, 0.0f, -height() * 0.5f);
+
+	tic;
 	for (int j = 0; j < height(); ++j)
 	{
-		std::cerr << "CALCULATE: " << double(j * width()) / width() / height() << std::endl;
-
 		for (int i = 0; i < width(); ++i)
 		{
-			//std::cerr << "CALCULATE: " << double(j * width() + i) / width() / height() << std::endl;
 			ray_tracer(cast_ray(eye_source, i, j), 
 				Point3F(1.0f, 1.0f, 1.0f), 
 				20, 
@@ -263,7 +264,7 @@ void RayTracingScene::precompute()
 				i, j);
 		}
 	}
-
+	toc;
 	save_img("result.png");
 	is_finish_trace_ = true;
 }
