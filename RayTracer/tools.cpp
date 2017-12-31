@@ -85,6 +85,7 @@ bool load_obj(Mesh & mesh, const std::string filename, Point3F center, float sca
 
 	std::string mark;
 	float position[3];
+	float normal[3];
 	unsigned short indices[3];
 	char buffer[1024];
 
@@ -100,7 +101,9 @@ bool load_obj(Mesh & mesh, const std::string filename, Point3F center, float sca
 		}
 		else if (mark == "vn")
 		{
-			fin.getline(buffer, 1024);
+			fin >> normal[0] >> normal[1] >> normal[2];
+			Vertice n(normal[0], normal[1], normal[2]);
+			mesh.insert_normal(n);
 			index++;
 		}
 		else if (mark == "vt")
@@ -134,6 +137,12 @@ bool load_obj(Mesh & mesh, const std::string filename, Point3F center, float sca
 
 	clog << "the model has " << mesh.trifacets_num() << "faces and " << mesh.vertices_num()
 		<< " vertices. \n";
+	clog << "the model has " << mesh.normals_num() << " normals.\n";
+	if (mesh.normals_num() == mesh.vertices_num())
+	{
+		mesh.set_normal_ok(true);
+		clog << "the model has already contained all the normals.\n";
+	}
 	return true;
 }
 

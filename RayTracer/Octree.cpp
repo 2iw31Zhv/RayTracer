@@ -206,6 +206,8 @@ bool Octree::hit(const OctreeNode * p_node, const Ray & ray, float t0, float t1,
 			}
 		};
 
+		// here, we just trivially traverse all the child nodes
+		// TODO 
 		PROCESS_NODE(p_node->c000);
 		PROCESS_NODE(p_node->c001);
 		PROCESS_NODE(p_node->c010);

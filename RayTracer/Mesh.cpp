@@ -7,7 +7,8 @@
 #include "Geometry.h"
 
 Mesh::Mesh() :
-	bounding_box_(new BoundingBox)
+	bounding_box_(new BoundingBox),
+	isNormalOk(false)
 {
 
 }
@@ -29,6 +30,11 @@ Mesh::Mesh(const Mesh& mesh)
 		trifacets_.insert(t);
 	}
 
+	for (const auto& n : mesh.normals_)
+	{
+		normals_.insert(n);
+	}
+
 	bounding_box_.reset(new BoundingBox(mesh.bounding_box()));
 }
 
@@ -44,6 +50,12 @@ void Mesh::insert(const Vertice& p)
 	size_t vid = vertices_.size() + 1;
 	vertices_.insert(std::make_pair(vid, p));
 	bounding_box_->add(p);
+}
+
+void Mesh::insert_normal(const Vertice & n)
+{
+	size_t nid = normals_.size() + 1;
+	normals_.insert(std::make_pair(nid, n));
 }
 
 void Mesh::insert(const QuadFacet& f)
@@ -71,6 +83,11 @@ const QuadFacet& Mesh::quadfacet_at(size_t fid) const
 const TriFacet& Mesh::trifacet_at(size_t fid) const
 {
 	return trifacets_.at(fid);
+}
+
+const Vertice & Mesh::normal_at(size_t nid) const
+{
+	return normals_.at(nid);
 }
 
 void Mesh::save(const char * filename) const
