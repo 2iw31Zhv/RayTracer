@@ -10,12 +10,12 @@ Surface::Surface() :
 
 }
 
-QColor Surface::read_texture(const Ray& ray, float t) const
+QColor Surface::read_texture(const Ray& ray, double t) const
 {
 	return material_->lambert_color;
 }
 
-Point3F Surface::change_normal(const Ray & ray, float t)const 
+Point3F Surface::change_normal(const Ray & ray, double t)const 
 {
 	return hit_normal(ray, t);
 }

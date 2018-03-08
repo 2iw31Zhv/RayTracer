@@ -32,13 +32,13 @@ private:
 	QColor * screenbuffer_;
 
 	Ray cast_ray(const Point3F& source, int i, int j);
-	bool check_hit(const Ray& ray, float& t, Surface *& hit_object);
+	bool check_hit(const Ray& ray, double& t, Surface *& hit_object);
 
 	void ray_tracer(const Ray& ray, 
 		Point3F weight, 
 		int depth, 
 		QColor& color, 
-		const Point3F& light_source,
+		const std::vector<Point3F>& light_sources,
 		int i,
 		int j);
 	

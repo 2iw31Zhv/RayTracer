@@ -13,12 +13,12 @@ private:
 	QPointF c3_;
 
 	Vertice center_;
-	float size_;
+	double size_;
 public:
 	RotationBezier2(const QPointF& c1, const QPointF& c2, const QPointF& c3,
-		const Vertice& center, float size);
+		const Vertice& center, double size);
 
-	virtual bool hit(const Ray& ray, float t0, float t1, float& t);
-	virtual Point3F hit_normal(const Ray& ray, float t) const;
+	virtual bool hit(const Ray& ray, double t0, double t1, double& t);
+	virtual Point3F hit_normal(const Ray& ray, double t) const;
 
 };

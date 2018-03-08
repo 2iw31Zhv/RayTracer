@@ -5,8 +5,6 @@
 #include "Material.h"
 #include "Polygonal.h"
 
-#include "easylogging++\easylogging++.h"
-
 Polygonal::Polygonal(const std::vector<Vertice>& vertices)
 {
 	
@@ -25,10 +23,10 @@ Polygonal::Polygonal(const std::vector<Vertice>& vertices)
 	assert(is_convex_());
 }
 
-bool Polygonal::hit(const Ray & ray, float t0, float t1, float & t)
+bool Polygonal::hit(const Ray & ray, double t0, double t1, double & t)
 {
 	float dn = ray.d().dot(normal());
-	if (fabs(dn) < 1e-3f)
+	if (fabs(dn) < 1e-3)
 	{
 		return false;
 	}
@@ -125,7 +123,7 @@ bool Polygonal::hit(const Ray & ray, float t0, float t1, float & t)
 	return true;
 }
 
-Point3F Polygonal::hit_normal(const Ray & ray, float t) const
+Point3F Polygonal::hit_normal(const Ray & ray, double t) const
 {
 	return normal();
 }
@@ -135,7 +133,7 @@ Point3F Polygonal::normal() const
 	return normal_;
 }
 
-QColor Polygonal::read_texture(const Ray & ray, float t) const
+QColor Polygonal::read_texture(const Ray & ray, double t) const
 {
 	if (!is_rectangle() || !material_->has_texture())
 	{

@@ -28,7 +28,7 @@ QColor operator*(const Point3F& lhs, const QColor& rhs);
 
 QColor operator*(const QColor& lhs, const Point3F& rhs);
 
-void givens(float& x1, float& x2, float theta);
+void givens(double& x1, double& x2, double theta);
 
 double determinant2(double a11, double a12, double a21, double a22);
 

@@ -16,10 +16,10 @@ public:
 	QColor lambert_color;
 	QColor phong_color;
 
-	float dielectric;
+	double dielectric;
 	Point3F alpha;
 
-	float phong_ratio;
+	double phong_ratio;
 	
 	std::shared_ptr<ImageMatrix> texture;
 

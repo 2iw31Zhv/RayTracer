@@ -11,7 +11,7 @@ class Vertice :
 	public Point3F
 {
 public:
-	Vertice(float x = 0.0f, float y = 0.0f, float z = 0.0f) :
+	Vertice(double x = 0.0f, double y = 0.0f, double z = 0.0f) :
 		Point3F(x, y, z) {}
 	Vertice(const Point3F& p) : Point3F(p) {}
 
@@ -28,7 +28,7 @@ public:
 
 	const Point3F& e() const { return e_; }
 	Point3F d() const { return d_; }
-	Point3F at(float t)const { return e_ + t * d(); }
+	Point3F at(double t)const { return e_ + t * d(); }
 };
 
 class BoundingBox
@@ -40,12 +40,12 @@ public:
 		data_(std::make_pair(vmin, vmax)) {}
 	BoundingBox& add(const Vertice& v);
 	BoundingBox& add(const BoundingBox& b);
-	const float& min_x() const { return data_.first.x(); }
-	const float& max_x() const { return data_.second.x(); }
-	const float& min_y() const { return data_.first.y(); }
-	const float& max_y() const { return data_.second.y(); }
-	const float& min_z() const { return data_.first.z(); }
-	const float& max_z() const { return data_.second.z(); }
+	const double& min_x() const { return data_.first.x(); }
+	const double& max_x() const { return data_.second.x(); }
+	const double& min_y() const { return data_.first.y(); }
+	const double& max_y() const { return data_.second.y(); }
+	const double& min_z() const { return data_.first.z(); }
+	const double& max_z() const { return data_.second.z(); }
 };
 
 enum Direction

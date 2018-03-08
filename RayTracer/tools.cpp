@@ -187,7 +187,7 @@ QColor operator*(const QColor & lhs, const Point3F & rhs)
 		lhs.blue() * rhs.z());
 }
 
-void givens(float& x1, float& x2, float theta)
+void givens(double& x1, double& x2, double theta)
 {
 	float x1_temp = x1;
 	float x2_temp = x2;

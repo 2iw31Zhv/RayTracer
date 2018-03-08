@@ -9,16 +9,16 @@ class RotationBezierSurface :
 private:
 	BezierCurve bezier_curve_;
 	Vertice center_;
-	float size_;
+	double size_;
 
 	double u_, v_;
 public:
 	RotationBezierSurface(const BezierCurve& bezier_curve,
 		const Vertice& center,
-		float size);
+		double size);
 
-	virtual bool hit(const Ray& ray, float t0, float t1, float& t);
-	virtual Point3F hit_normal(const Ray& ray, float t) const;
+	virtual bool hit(const Ray& ray, double t0, double t1, double& t);
+	virtual Point3F hit_normal(const Ray& ray, double t) const;
 
 private:
 	QPointF pu_(double u) const;

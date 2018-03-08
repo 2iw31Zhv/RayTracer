@@ -4,7 +4,7 @@
 #include "Material.h"
 #include "tools.h"
 
-Sphere::Sphere(const Vertice& center, float radius) :
+Sphere::Sphere(const Vertice& center, double radius) :
 	center_(center),
 	radius_(radius)
 {
@@ -16,7 +16,7 @@ Sphere::Sphere(const Vertice& center, float radius) :
 		center.z() + radius));
 }
 
-bool Sphere::hit(const Ray& ray, float t0, float t1, float& t)
+bool Sphere::hit(const Ray& ray, double t0, double t1, double& t)
 {
 	const Point3F& d = ray.d();
 	const Point3F& e = ray.e();
@@ -57,12 +57,12 @@ bool Sphere::hit(const Ray& ray, float t0, float t1, float& t)
 	return true;
 }
 
-Point3F Sphere::hit_normal(const Ray & ray, float t) const
+Point3F Sphere::hit_normal(const Ray & ray, double t) const
 {
 	return (ray.at(t) - center()).normalize();
 }
 
-Point3F Sphere::change_normal(const Ray & ray, float t) const
+Point3F Sphere::change_normal(const Ray & ray, double t) const
 {
 	Point3F old_normal = hit_normal(ray, t);
 

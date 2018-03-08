@@ -3,15 +3,14 @@
 #include "RotationBezier2.h"
 #include "tools.h"
 
-#include "easylogging++\easylogging++.h"
-
+#include <iostream>
 #include <cstdio>
 
 RotationBezier2::RotationBezier2(const QPointF & c1, 
 	const QPointF & c2, 
 	const QPointF & c3,
 	const Vertice& center,
-	float size):
+	double size):
 	c1_(c1), c2_(c2), c3_(c3),
 	center_(center), size_(size)
 {
@@ -115,7 +114,7 @@ void solve_hit_u(const Point3F& local_eye, const Point3F& direction,
 	}
 }
 
-bool RotationBezier2::hit(const Ray & ray, float t0, float t1, float & t)
+bool RotationBezier2::hit(const Ray & ray, double t0, double t1, double & t)
 {
 	// solve the respective t and u
 	Point3F local_eye = ray.e() - center_;
@@ -212,7 +211,7 @@ bool RotationBezier2::hit(const Ray & ray, float t0, float t1, float & t)
 
 // local_eye.y + t d.y = Ay u^2 + By u + Cy
 // (local_eye.x + t d.x)^2 + (local_eye.z + t d.z)^2 = (Ax u^2 + Bx u + Cx)^2
-Point3F RotationBezier2::hit_normal(const Ray & ray, float t) const
+Point3F RotationBezier2::hit_normal(const Ray & ray, double t) const
 {
 	Point3F local_hit = ray.at(t) - center_;
 	double ay, by, cy;

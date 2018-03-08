@@ -21,6 +21,6 @@ public:
 	Octree(const Mesh& mesh);
 	~Octree();
 
-	bool hit(const Ray & ray, float t0, float t1, float & t, int& hit_face_id);
-	bool hit(const OctreeNode * p_node, const Ray & ray, float t0, float t1, float & t, int& hit_face_id);
+	bool hit(const Ray & ray, double t0, double t1, double & t, int& hit_face_id);
+	bool hit(const OctreeNode * p_node, const Ray & ray, double t0, double t1, double & t, int& hit_face_id);
 };

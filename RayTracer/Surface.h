@@ -18,12 +18,12 @@ protected:
 public:
 	Surface();
 	virtual ~Surface() {}
-	virtual bool hit(const Ray& ray, float t0, float t1, float& t) = 0;
-	virtual Point3F hit_normal(const Ray& ray, float t) const = 0;
+	virtual bool hit(const Ray& ray, double t0, double t1, double& t) = 0;
+	virtual Point3F hit_normal(const Ray& ray, double t) const = 0;
 	virtual const BoundingBox& bounding_box() const { return *bounding_box_; }
 
 	Material& get_material() { return *material_; }
 
-	virtual QColor read_texture(const Ray& ray, float t) const;
-	virtual Point3F change_normal(const Ray& ray, float t) const;
+	virtual QColor read_texture(const Ray& ray, double t) const;
+	virtual Point3F change_normal(const Ray& ray, double t) const;
 };

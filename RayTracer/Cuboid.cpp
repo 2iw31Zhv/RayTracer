@@ -5,7 +5,7 @@
 #include "tools.h"
 
 
-Cuboid::Cuboid(const Vertice& p, float length, float width, float height) :
+Cuboid::Cuboid(const Vertice& p, double length, double width, double height) :
 	length_(length), width_(width), height_(height)
 {
 	auto PROCESSV = [&] (int i, int j, int k) {
@@ -28,7 +28,7 @@ Cuboid::Cuboid(const Vertice& p, float length, float width, float height) :
 	}
 }
 
-bool Cuboid::hit(const Ray& ray, float t0, float t1, float& t)
+bool Cuboid::hit(const Ray& ray, double t0, double t1, double& t)
 {
 	using std::min;
 	using std::max;
@@ -143,7 +143,7 @@ Vertice Cuboid::center() const
 
 
 
-Point3F Cuboid::hit_normal(const Ray& ray, float t) const
+Point3F Cuboid::hit_normal(const Ray& ray, double t) const
 {
 	Point3F flow = Point3F(
 		(ray.at(t) - center()).dot(facet_normal(RIGHT)),
@@ -177,7 +177,7 @@ Point3F Cuboid::hit_normal(const Ray& ray, float t) const
 	return result;
 }
 
-void Cuboid::givens3(float theta1, float theta2, float theta3)
+void Cuboid::givens3(double theta1, double theta2, double theta3)
 {
 	for (auto& v : vertices_)
 	{

@@ -5,14 +5,14 @@
 #include <iostream>
 
 using namespace std;
-using TimeId = pair<float, int>;
+using TimeId = pair<double, int>;
 
-bool MeshSurface::hit(const Ray & ray, float t0, float t1, float & t)
+bool MeshSurface::hit(const Ray & ray, double t0, double t1, double & t)
 {
 	return octree_.hit(ray, t0, t1, t, hit_face_id_);
 }
 
-Point3F MeshSurface::hit_normal(const Ray & ray, float t) const
+Point3F MeshSurface::hit_normal(const Ray & ray, double t) const
 {
 	int fid = hit_face_id_;
 	const TriFacet& f = mesh_.trifacet_at(fid);

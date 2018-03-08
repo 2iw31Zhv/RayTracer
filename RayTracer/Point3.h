@@ -147,6 +147,6 @@ Point3<T>& Point3<T>::normalize()
 template class Point3<float>;
 template class Point3<double>;
 
-typedef Point3<float> Point3F;
+typedef Point3<double> Point3F;
 typedef Point3<double> Point3D;
 

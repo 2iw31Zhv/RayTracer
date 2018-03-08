@@ -20,6 +20,6 @@ public:
 		mesh_(mesh),
 		octree_(mesh) {}
 
-	virtual bool hit(const Ray& ray, float t0, float t1, float& t);
-	virtual Point3F hit_normal(const Ray& ray, float t) const;
+	virtual bool hit(const Ray& ray, double t0, double t1, double& t);
+	virtual Point3F hit_normal(const Ray& ray, double t) const;
 };

@@ -9,17 +9,17 @@ class Cuboid:
 {
 private:
 	std::vector<Vertice> vertices_;
-	float length_;
-	float width_;
-	float height_;
+	double length_;
+	double width_;
+	double height_;
 
 public:
-	Cuboid(const Vertice& p, float length, float width, float height);
+	Cuboid(const Vertice& p, double length, double width, double height);
 
-	virtual bool hit(const Ray& ray, float t0, float t1, float& t);
-	virtual Point3F hit_normal(const Ray& ray, float t) const;
+	virtual bool hit(const Ray& ray, double t0, double t1, double& t);
+	virtual Point3F hit_normal(const Ray& ray, double t) const;
 
-	void givens3(float theta1, float theta2, float theta3);
+	void givens3(double theta1, double theta2, double theta3);
 	Point3F facet_normal(Direction dir) const;
 	Vertice center() const;
 };

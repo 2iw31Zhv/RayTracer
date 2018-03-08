@@ -1,8 +1,6 @@
 #include "Material.h"
 #include <cmath>
 
-#include "easylogging++\easylogging++.h"
-
 bool Material::is_dielectric() const
 {
 	return fabs(dielectric - 1.0) > 0.001f;

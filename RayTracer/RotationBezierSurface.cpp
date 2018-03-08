@@ -2,11 +2,10 @@
 
 #include "RotationBezierSurface.h"
 #include "tools.h"
-#include "easylogging++\easylogging++.h"
 
 RotationBezierSurface::RotationBezierSurface(const BezierCurve& bezier_curve,
 	const Vertice& center,
-	float size):
+	double size):
 	center_(center),
 	size_(size),
 	u_(0.0),
@@ -21,7 +20,7 @@ RotationBezierSurface::RotationBezierSurface(const BezierCurve& bezier_curve,
 
 // 3 elements 3 equations
 // center_ + size * (x(u)cosv, y(u), x(u)sinv) = e + t * d
-bool RotationBezierSurface::hit(const Ray & ray, float t0, float t1, float & t)
+bool RotationBezierSurface::hit(const Ray & ray, double t0, double t1, double & t)
 {
 	//bounding box check
 	double u(0.0), v(0.0), tempt(t0);
@@ -167,7 +166,7 @@ bool RotationBezierSurface::hit(const Ray & ray, float t0, float t1, float & t)
 }
 
 //(dyu cos(v) , -dxu, dyu sin(v))
-Point3F RotationBezierSurface::hit_normal(const Ray & ray, float t) const
+Point3F RotationBezierSurface::hit_normal(const Ray & ray, double t) const
 {
 	Point3F result(-dpu_(u_).y() * cos(v_),
 		dpu_(u_).x(), 

@@ -22,7 +22,7 @@ void BezierCurve::pop_ctrl_points()
 
 const QPointF _de_casteljao_impl(const QVector<QPointF>& ctrl_points_,
 	int i,
-	float t,
+	double t,
 	int k)
 {
 	if (k == 0)
@@ -42,7 +42,7 @@ void BezierCurve::de_casteljao()
 	samples_.resize(ctrl_size * sample_size_);
 	
 	int sample_size = samples_.size();
-	float interval = 1.0f / (sample_size - 1);
+	double interval = 1.0f / (sample_size - 1);
 
 	if (ctrl_size == 0) return;
 	else if (ctrl_size == 1)

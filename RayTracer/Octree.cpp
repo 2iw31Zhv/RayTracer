@@ -133,12 +133,12 @@ Octree::~Octree()
 	remove(root_);
 }
 
-bool Octree::hit(const Ray & ray, float t0, float t1, float & t, int & hit_face_id)
+bool Octree::hit(const Ray & ray, double t0, double t1, double & t, int & hit_face_id)
 {
 	return hit(root_, ray, t0, t1, t, hit_face_id);
 }
 
-bool Octree::hit(const OctreeNode * p_node, const Ray & ray, float t0, float t1, float & t, int& hit_face_id)
+bool Octree::hit(const OctreeNode * p_node, const Ray & ray, double t0, double t1, double & t, int& hit_face_id)
 {
 	Point3F bmin(p_node->bounding_box()->min_x(),
 		p_node->bounding_box()->min_y(),
@@ -166,7 +166,7 @@ bool Octree::hit(const OctreeNode * p_node, const Ray & ray, float t0, float t1,
 	{
 		const vector < pair<Polygonal*, int> >& faces = p_node->get_faces();
 
-		float temp_t;
+		double temp_t;
 
 		vector< pair<float, int> > timesId;
 
@@ -194,7 +194,7 @@ bool Octree::hit(const OctreeNode * p_node, const Ray & ray, float t0, float t1,
 	}
 	else
 	{
-		float temp_t;
+		double temp_t;
 		int temp_id;
 		vector<TimeId> timesId;
 
