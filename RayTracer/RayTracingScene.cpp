@@ -1,5 +1,5 @@
 #include <cassert>
-
+#include <random>
 #include <QPainter>
 
 #include "RayTracingScene.h"
@@ -54,8 +54,6 @@ void RayTracingScene::ray_tracer(const Ray & ray,
 		return;
 	}
 
-	
-
 	double time;
 	Surface * hit_object = nullptr;
 	if (!check_hit(ray, time, hit_object))
@@ -76,7 +74,7 @@ void RayTracingScene::ray_tracer(const Ray & ray,
 	}
 	Point3F d = ray.d();
 
-	double ratioPerLight = 1.0 / light_sources.size();
+	double ratioPerLight = 1.5 / light_sources.size();
 
 	
 	for (const auto& light_source : light_sources)
@@ -257,18 +255,23 @@ bool RayTracingScene::isInShadow(
 void RayTracingScene::precompute()
 {
 	std::vector<Point3F> light_sources;
-	double edgeLength = height() * 0.1;
-	int edgeSampleNum = 8;
-	double gridLength = edgeLength / (edgeSampleNum - 1);
 
-	for (int i = 0; i < edgeSampleNum; i++)
+
+	double edgeLength = height() * 0.1;
+	int sampleNumber = 64;
+
+	std::default_random_engine generator(unsigned(time(0)));
+	std::uniform_real_distribution<double> distribution(-edgeLength * 0.5,
+		edgeLength * 0.5);
+
+	for (int i = 0; i < sampleNumber; i++)
 	{
-		for (int j = 0; j < edgeSampleNum; j++)
-		{
-			light_sources.push_back(Point3F(0.0 - edgeLength * 0.5 + gridLength * i, 
+		double x = distribution(generator);
+		double y = distribution(generator);
+
+		light_sources.push_back(Point3F(x, 
 				height() * 0.495, 
-				height() * 0.2 - edgeLength * 0.5 + gridLength * j));
-		}
+				height() * 0.2 + y));
 	}
 	
 	set_scene();
